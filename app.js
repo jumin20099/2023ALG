@@ -28,11 +28,21 @@ function onload() {
 function handleClick(event) {
   switch (event.target.id) {
     case 'undoButton':
-      undo();
+      if (currentIndex > 0) { //undo
+        currentIndex--;
+        total = resultArray[currentIndex];
+        inputValue.value = '';
+        updateDisplay();
+      };
       break;
 
     case 'redoButton':
-      redo();
+      if (currentIndex < resultArray.length - 1) { //redo
+        currentIndex++;
+        total = resultArray[currentIndex];
+        inputValue.value = '';
+        updateDisplay();
+      }
       break;
 
     default:
@@ -43,8 +53,7 @@ function handleClick(event) {
   updateButtons(); // undo, redo 버튼 활성화 상태 업데이트
 }
 
-// ===== 계산 함수 ===== //
-function calculate(operation) {
+function calculate(operation) { // 계산
   let inputValueNumber = parseFloat(inputValue.value);
 
   if (isNaN(inputValueNumber)) {
@@ -77,28 +86,7 @@ function updateDisplay() {
   updateButtons();
 }
 
-// ===== undo 함수 ===== //
-function undo() {
-  if (currentIndex > 0) {
-    currentIndex--;
-    total = resultArray[currentIndex];
-    inputValue.value = '';
-    updateDisplay();
-  }
-}
-
-// ===== redo 함수 ===== //
-function redo() {
-  if (currentIndex < resultArray.length - 1) {
-    currentIndex++;
-    total = resultArray[currentIndex];
-    inputValue.value = '';
-    updateDisplay();
-  }
-}
-
-// ===== 버튼 활성화/비활성화 함수 ===== //
-function updateButtons() {
+function updateButtons() { //버튼 활성화 비활성화
   undoButton.disabled = currentIndex <= 0;
   redoButton.disabled = currentIndex >= resultArray.length - 1;
 }
